@@ -60,16 +60,21 @@ function UserProfile() {
 
         const newImage = field.value
 
-
-
-
         try {
             if (newImage) {
                 logic.updateGalleryImages([newImage])
                     .then(() => {
                         alert('Gallery images updated successfully')
+
                         field.value = ''
-                        setNewImage('')
+
+                        return logic.getUserProfile(userId)
+                            .then(user => {
+                                const sortedImages = user.galleryImages.reverse()
+
+
+                                setUser({ ...user, galleryImages: sortedImages })
+                            })
                     })
                     .catch((error) => {
                         console.error(error)
